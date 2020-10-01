@@ -4,7 +4,7 @@ const apiKey = 'fe1e67f24c62d172a3cfd7a4be286895';
 const applyid = ',us&appid=';
 // Create a new date instance dynamically with JS
 let date = new Date();
-let newDate = date.getMonth() + '.' + date.getDate() + '.' + date.getFullYear();
+let newDate = date.getMonth() + 1 + '.' + date.getDate() + '.' + date.getFullYear();
 
 document.getElementById('generate').addEventListener('click', performAction);
 
@@ -15,7 +15,7 @@ function performAction(e) {
     getWeatherData(baseUrl, zipcode, apiKey)
         .then(function(data) {
             console.log(data);
-            postData('http://localhost:3000/projectData', {
+            postData('/add', {
                 date: newDate,
                 feeling: feeling,
                 temp: data.main.temp
@@ -39,13 +39,14 @@ const updateUI = async() => {
         const allData = await request.json();
         document.getElementById('date').innerHTML = allData.date;
         document.getElementById('content').innerHTML = document.getElementById('feelings').value;
+        document.getElementById('temp').innerHTML = allData.temp;
     } catch (error) {
         console.log("error", error);
     }
 }
 async function postData(url, data) {
     const response = await fetch(url, {
-        method: 'postData',
+        method: 'POST',
         credentials: 'same-origin',
         headers: {
             'Content-Type': 'application/json'
